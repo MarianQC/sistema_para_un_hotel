@@ -9,7 +9,6 @@ import java.time.LocalDate;
 public class Usuario {
     @Id
     private String cedula;
-
     private String nombre;
     private String apellido;
     private String correo;
@@ -129,8 +128,5 @@ public class Usuario {
     public void setRol(String rol) {
         this.rol = rol;
     }
-    
-    
-}
- 
 
+   }

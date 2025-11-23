@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hotel Aurora - Sistema de Acceso</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
+              rel="stylesheet"
+              integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <style>
+            /* NAVBAR Y ESTILOS BASE DEL INDEX */
+            .colorhotel {
+                background: #0C263D;
+            }
+            body {
+                padding-top: 115px;
+                background: #ffffff;
+                min-height: 100vh;
+            }
+
+            /* TARJETA DE LOGIN */
+            .login-card {
+                max-width: 420px;
+                margin: 40px auto;
+                border-radius: 12px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+                background: #ffffff;
+            }
+            .card-header {
+                background: #0C263D;
+                color: #ffffff;
+                padding: 25px;
+                text-align: center;
+                border-bottom: 3px solid #D4A853;
+                border-radius: 12px 12px 0 0;
+            }
+            .card-header i {
+                font-size: 2rem;
+                color: #D4A853;
+                margin-bottom: 10px;
+            }
+            .card-header h4 {
+                color: #D4A853;
+                margin: 10px 0 5px;
+                font-weight: 600;
+            }
+            .card-header small {
+                color: #adb5bd;
+            }
+
+            /* TABS */
+            .nav-tabs {
+                border-bottom: 2px solid #D4A853;
+                background: #f8f9fa;
+                padding: 10px 10px 0;
+            }
+            .nav-tabs .nav-link {
+                color: #0C263D;
+                border: none;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            .nav-tabs .nav-link.active {
+                background: #0C263D;
+                color: #D4A853;
+                border-radius: 5px 5px 0 0;
+            }
+
+            /* FORMULARIOS */
+            .input-group {
+                margin-bottom: 15px;
+            }
+            .input-group-text {
+                background: #f8f9fa;
+                border: 1px solid #ced4da;
+            }
+            .form-control,
+            .form-select {
+                border: 1px solid #ced4da;
+                padding: 10px;
+                transition: all 0.3s ease;
+            }
+            .form-control:focus,
+            .form-select:focus {
+                border-color: #D4A853;
+                box-shadow: 0 0 0 0.2rem rgba(212,168,83,0.25);
+            }
+
+            /* BOTONES */
+            .btn-dorado {
+                background: #D4A853;
+                color: #0C263D;
+                font-weight: 600;
+                border: none;
+                padding: 10px 25px;
+                transition: all 0.3s ease;
+            }
+            .btn-dorado:hover {
+                background: #c49a48;
+                color: #0C263D;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(212,168,83,0.3);
+            }
+            .btn-outline-secondary {
+                border-color: #6c757d;
+                color: #6c757d;
+            }
+            .btn-outline-secondary:hover {
+                background: #0C263D;
+                color: #ffffff;
+                border-color: #0C263D;
+            }
+
+            /* ENLACES */
+            .link-dorado {
+                color: #D4A853;
+                text-decoration: none;
+                font-weight: 500;
+            }
+            .link-dorado:hover {
+                color: #c49a48;
+                text-decoration: underline;
+            }
+
+            /* BARRA DE SEGURIDAD DE CONTRASEÑA */
+            .strength-container {
+                margin-top: 5px;
+                margin-bottom: 10px;
+            }
+            .strength-bar {
+                height: 4px;
+                border-radius: 2px;
+                transition: all 0.3s ease;
+            }
+            .weak {
+                background: #dc3545;
+                width: 33%;
+            }
+            .medium {
+                background: #ffc107;
+                width: 66%;
+            }
+            .strong {
+                background: #198754;
+                width: 100%;
+            }
+
+            /* INPUTS DE CODIGO */
+            .code-input {
+                width: 45px;
+                height: 50px;
+                text-align: center;
+                font-size: 1.3rem;
+                font-weight: bold;
+                border: 2px solid #D4A853;
+                border-radius: 8px;
+            }
+            .code-input:focus {
+                border-color: #0C263D;
+                box-shadow: 0 0 0 0.2rem rgba(12,38,61,0.15);
+            }
+
+            /* MOSTRAR Y OCULTAR SECCIONES */
+            .form-section {
+                display: none;
+            }
+            .form-section.active {
+                display: block;
+            }
+            .cliente-tab {
+                display: none;
+            }
+            .cliente-tab.active {
+                display: block;
+            }
+
+            /* RESPONSIVE */
+            @media (max-width: 576px) {
+                .login-card {
+                    margin: 20px 15px;
+                }
+                .code-input {
+                    width: 40px;
+                    height: 45px;
+                    font-size: 1.1rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- NAVBAR ORIGINAL DEL INDEX -->
+        <nav class="navbar navbar-expand-lg navbar-dark colorhotel fixed-top">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="index.html">
+                    <img src="imagenes/logoultimo.jpg" alt="logo del hotel" class="img-fluid w-25 ms-5">
+                </a>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 fw-bold">
+                        <li class="nav-item">
+                            <a class="nav-link px-4" href="index.html">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-4" href="#nosotros">Nosotros</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle px-4" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Reserva
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#">Habitaciones</a></li>
+                                <li><a class="dropdown-item" href="#">Salones</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-4" href="#contacto">Contactanos</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle px-4 active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">Login</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="#" onclick="showSection('cliente')">Cliente</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="showSection('personal')">Personal</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- SECCIÓN CLIENTE -->
+        <div class="container form-section active" id="clienteSection">
+            <div class="card login-card">
+                <div class="card-header">
+                    <i class="bi bi-person-circle"></i>
+                    <h4>Portal del Cliente</h4>
+                    <small>Bienvenido a Hotel Aurora</small>
+                </div>
+                <div class="card-body p-4">
+                    <div id="alertaCliente"></div>
+                    <ul class="nav nav-tabs mb-4">
+                        <li class="nav-item flex-fill">
+                            <button class="nav-link active w-100" onclick="showClienteTab('login')">
+                                <i class="bi bi-box-arrow-in-right"></i> Ingresar
+                            </button>
+                        </li>
+                        <li class="nav-item flex-fill">
+                            <button class="nav-link w-100" onclick="showClienteTab('registro')">
+                                <i class="bi bi-person-plus"></i> Registrarse
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- LOGIN CLIENTE -->
+                    <div id="loginCliente" class="cliente-tab active">
+                        <form id="formLoginCliente">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="loginEmail" placeholder="Correo electrónico" required>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="loginPassword" placeholder="Contraseña" required>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="recordarme">
+                                    <label class="form-check-label" for="recordarme">Recordarme</label>
+                                </div>
+                                <a href="#" class="link-dorado" onclick="showSection('recuperar')">¿Olvidaste tu contraseña?</a>
+                            </div>
+                            <button type="submit" class="btn btn-dorado w-100">
+                                <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- REGISTRO CLIENTE -->
+                    <div id="registroCliente" class="cliente-tab">
+                        <form id="formRegistroCliente">
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                        <input type="text" class="form-control" id="regNombre" placeholder="Nombre" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" id="regApellido" placeholder="Apellido" required>
+                                </div>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                                        <input type="text" class="form-control" id="regCedula" placeholder="Cédula" maxlength="10" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="date" class="form-control" id="regFechaNacimiento" required>
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="tel" class="form-control" id="regTelefono" placeholder="Teléfono" required>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="regEmail" placeholder="Correo electrónico" required>
+                            </div>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="regPassword" placeholder="Contraseña" oninput="checkPassword(this.value)" required>
+                            </div>
+                            <div class="strength-container">
+                                <div class="strength-bar" id="strengthBar"></div>
+                                <div class="strength-text" id="strengthText"></div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" id="regConfirmPassword" placeholder="Confirmar contraseña" required>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="aceptarTerminos" required>
+                                <label class="form-check-label" for="aceptarTerminos">
+                                    Acepto los <a href="#" class="link-dorado">términos y condiciones</a>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-dorado w-100">
+                                <i class="bi bi-person-plus"></i> Crear Cuenta
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN PERSONAL -->
+        <div class="container form-section" id="personalSection">
+            <div class="card login-card">
+                <div class="card-header">
+                    <i class="bi bi-briefcase"></i>
+                    <h4>Portal del Personal</h4>
+                    <small>Acceso exclusivo para empleados</small>
+                </div>
+                <div class="card-body p-4">
+                    <div id="alertaPersonal"></div>
+                    <form id="formLoginPersonal">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                            <input type="text" class="form-control" id="personalUsuario" placeholder="Usuario" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control" id="personalPassword" placeholder="Contraseña" required>
+                        </div>
+                        
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-briefcase-fill"></i></span>
+                            <select class="form-select" id="personalRol" required>
+                                <option value="" selected disabled>Selecciona tu rol</option>
+                                <option value="admin">Administrador</option>
+                                <option value="recepcion">Recepción</option>
+                                <option value="facturacion">Facturación</option>
+                                <option value="eventos">Eventos</option>
+                                <option value="restaurante">Restaurante</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-dorado w-100 mb-3">
+                            <i class="bi bi-box-arrow-in-right"></i> Ingresar
+                        </button>
+                        <div class="text-center mb-3">
+                            <a href="#" class="link-dorado" onclick="showSection('recuperarEmpleado')">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        <hr>
+                        <button type="button" class="btn btn-outline-secondary w-100" onclick="showSection('cliente')">
+                            <i class="bi bi-arrow-left"></i> Volver al Portal Cliente
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECUPERAR CONTRASEÑA - CLIENTE -->
+        <div class="container form-section" id="recuperarSection">
+            <div class="card login-card">
+                <div class="card-header">
+                    <i class="bi bi-key"></i>
+                    <h4>Recuperar Contraseña</h4>
+                    <small>Portal Cliente</small>
+                </div>
+                <div class="card-body p-4">
+                    <div id="alertaRecuperar"></div>
+                    <div id="recuperarPaso1">
+                        <p class="text-muted text-center mb-4"><i class="bi bi-info-circle"></i> Ingresa tu correo electrónico registrado</p>
+                        <form id="formRecuperarEmail">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="recuperarEmail" placeholder="Correo electrónico" required>
+                            </div>
+                            <button type="submit" class="btn btn-dorado w-100"><i class="bi bi-send"></i> Enviar Código</button>
+                        </form>
+                    </div>
+                    <div id="recuperarPaso2" style="display:none;">
+                        <p class="text-muted text-center mb-4"><i class="bi bi-shield-check"></i> Ingresa el código de 6 dígitos</p>
+                        <form id="formVerificarCodigo">
+                            <div class="d-flex gap-2 justify-content-center mb-4">
+                                <input type="text" class="form-control code-input" maxlength="1" id="code1" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="code2" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="code3" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="code4" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="code5" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="code6" required>
+                            </div>
+                            <button type="submit" class="btn btn-dorado w-100 mb-2"><i class="bi bi-check-circle"></i> Verificar</button>
+                            <p class="text-center"><a href="#" class="link-dorado" onclick="reenviarCodigoCliente()"><i class="bi bi-arrow-clockwise"></i> Reenviar código</a></p>
+                        </form>
+                    </div>
+                    <div id="recuperarPaso3" style="display:none;">
+                        <p class="text-muted text-center mb-4"><i class="bi bi-lock-fill"></i> Crea tu nueva contraseña</p>
+                        <form id="formNuevaPassword">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="nuevaPassword" placeholder="Nueva contraseña" required>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" id="confirmarNuevaPassword" placeholder="Confirmar" required>
+                            </div>
+                            <button type="submit" class="btn btn-dorado w-100"><i class="bi bi-check-lg"></i> Cambiar Contraseña</button>
+                        </form>
+                    </div>
+                    <hr class="my-4">
+                    <button type="button" class="btn btn-outline-secondary w-100" onclick="showSection('cliente')">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECUPERAR CONTRASEÑA - EMPLEADO -->
+        <div class="container form-section" id="recuperarEmpleadoSection">
+            <div class="card login-card">
+                <div class="card-header">
+                    <i class="bi bi-key"></i>
+                    <h4>Recuperar Contraseña</h4>
+                    <small>Portal Empleado</small>
+                </div>
+                <div class="card-body p-4">
+                    <div id="alertaRecuperarEmpleado"></div>
+                    <div id="recuperarEmpleadoPaso1">
+                        <p class="text-muted text-center mb-4"><i class="bi bi-info-circle"></i> Ingresa tu correo corporativo</p>
+                        <form id="formRecuperarEmailEmpleado">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="recuperarEmailEmpleado" placeholder="Correo corporativo" required>
+                            </div>
+                            <button type="submit" class="btn btn-dorado w-100"><i class="bi bi-send"></i> Enviar Código</button>
+                        </form>
+                    </div>
+                    <div id="recuperarEmpleadoPaso2" style="display:none;">
+                        <p class="text-muted text-center mb-4"><i class="bi bi-shield-check"></i> Ingresa el código de 6 dígitos</p>
+                        <form id="formVerificarCodigoEmpleado">
+                            <div class="d-flex gap-2 justify-content-center mb-4">
+                                <input type="text" class="form-control code-input" maxlength="1" id="codeEmp1" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="codeEmp2" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="codeEmp3" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="codeEmp4" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="codeEmp5" required>
+                                <input type="text" class="form-control code-input" maxlength="1" id="codeEmp6" required>
+                            </div>
+                            <button type="submit" class="btn btn-dorado w-100 mb-2"><i class="bi bi-check-circle"></i> Verificar</button>
+                            <p class="text-center"><a href="#" class="link-dorado" onclick="reenviarCodigoEmpleado()"><i class="bi bi-arrow-clockwise"></i> Reenviar código</a></p>
+                        </form>
+                    </div>
+                    <div id="recuperarEmpleadoPaso3" style="display:none;">
+                        <p class="text-muted text-center mb-4"><i class="bi bi-lock-fill"></i> Crea tu nueva contraseña</p>
+                        <form id="formNuevaPasswordEmpleado">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="nuevaPasswordEmpleado" placeholder="Nueva contraseña" required>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" id="confirmarNuevaPasswordEmpleado" placeholder="Confirmar" required>
+                            </div>
+                            <button type="submit" class="btn btn-dorado w-100"><i class="bi bi-check-lg"></i> Cambiar Contraseña</button>
+                        </form>
+                    </div>
+                    <hr class="my-4">
+                    <button type="button" class="btn btn-outline-secondary w-100" onclick="showSection('personal')">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="text-white fw-bold colorhotel text-center p-3">
+                <p>Todos los derechos reservados</p>
+                <p>Hotel Aurora | 2025</p>
+                <p>02-5034411 - aurorahotel@outlook.com</p>
+            </div>
+
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+            const API_URL = 'http://localhost:8082/sistema-hotel/api';
+            let correoRecuperacionCliente = '';
+            let codigoVerificadoCliente = '';
+            let correoRecuperacionEmpleado = '';
+            let codigoVerificadoEmpleado = '';
+
+            // Navegación entre secciones
+            function showSection(section) {
+                document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
+                document.getElementById(section + 'Section').classList.add('active');
+                limpiarFormularios();
+            }
+
+            // Navegación entre tabs de cliente
+            function showClienteTab(tab) {
+                document.querySelectorAll('.cliente-tab').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.nav-tabs .nav-link').forEach(el => el.classList.remove('active'));
+                document.getElementById(tab === 'login' ? 'loginCliente' : 'registroCliente').classList.add('active');
+                event.target.classList.add('active');
+            }
+
+            // Mostrar alertas
+            function showAlert(id, type, msg) {
+                const alertDiv = document.getElementById(id);
+                alertDiv.innerHTML = `
+                    <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                        ${msg}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>`;
+                setTimeout(() => alertDiv.innerHTML = '', 5000);
+            }
+
+            // Validar fortaleza de contraseña
+            function checkPassword(pwd) {
+                const bar = document.getElementById('strengthBar');
+                const text = document.getElementById('strengthText');
+                bar.className = 'strength-bar';
+                if(pwd.length < 6) {
+                    bar.classList.add('weak');
+                    text.innerHTML = '<span class="text-danger">Débil</span>';
+                } else if(pwd.length < 10 || !/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd)) {
+                    bar.classList.add('medium');
+                    text.innerHTML = '<span class="text-warning">Media</span>';
+                } else {
+                    bar.classList.add('strong');
+                    text.innerHTML = '<span class="text-success">Fuerte</span>';
+                }
+            }
+
+            // Autocompletado de códigos
+            document.querySelectorAll('[id^="code"]').forEach((input, i, inputs) => {
+                input.addEventListener('input', function() {
+                    if(this.value.length === 1 && i < inputs.length - 1) inputs[i + 1].focus();
+                });
+                input.addEventListener('keydown', function(e) {
+                    if(e.key === 'Backspace' && !this.value && i > 0) inputs[i - 1].focus();
+                });
+            });
+
+            document.querySelectorAll('[id^="codeEmp"]').forEach((input, i, inputs) => {
+                input.addEventListener('input', function() {
+                    if(this.value.length === 1 && i < inputs.length - 1) inputs[i + 1].focus();
+                });
+                input.addEventListener('keydown', function(e) {
+                    if(e.key === 'Backspace' && !this.value && i > 0) inputs[i - 1].focus();
+                });
+            });
+
+            // Limpiar formularios
+            function limpiarFormularios() {
+                document.querySelectorAll('form').forEach(form => form.reset());
+                document.querySelectorAll('.alert').forEach(alert => alert.remove());
+            }
+
+            // ==================== LOGIN CLIENTE ====================
+            document.getElementById('formLoginCliente').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const correo = document.getElementById('loginEmail').value;
+                const contraseña = document.getElementById('loginPassword').value;
+
+                try {
+                    const response = await fetch(`${API_URL}/usuarios/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ correo, contraseña })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.exito) {
+                       showAlert('alertaCliente', 'success', '<i class="bi bi-check-circle"></i> ' + data.mensaje);
+                       sessionStorage.setItem('usuario', JSON.stringify(data.usuario));
+                       sessionStorage.setItem('tipoUsuario', 'cliente');  // ← LÍNEA NUEVA
+                       setTimeout(() => {
+                           window.location.href = 'index.html';  // ← CAMBIO: antes era cliente-dashboard.html
+                       }, 1500);
+                    } else {
+                        showAlert('alertaCliente', 'danger', '<i class="bi bi-x-circle"></i> ' + data.mensaje);
+                    }
+                } catch (error) {
+                    showAlert('alertaCliente', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error de conexión con el servidor');
+                    console.error('Error:', error);
+                }
+            });
+
+            // ==================== REGISTRO CLIENTE ====================
+            document.getElementById('formRegistroCliente').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const password = document.getElementById('regPassword').value;
+                const confirmPassword = document.getElementById('regConfirmPassword').value;
+
+                if (password !== confirmPassword) {
+                    showAlert('alertaCliente', 'danger', '<i class="bi bi-x-circle"></i> Las contraseñas no coinciden');
+                    return;
+                }
+
+                const usuario = {
+                    cedula: document.getElementById('regCedula').value,
+                    nombre: document.getElementById('regNombre').value,
+                    apellido: document.getElementById('regApellido').value,
+                    correo: document.getElementById('regEmail').value,
+                    contraseña: password,
+                    fechaNacimiento: document.getElementById('regFechaNacimiento').value,
+                    telefono: document.getElementById('regTelefono').value
+                };
+
+                try {
+                    const response = await fetch(`${API_URL}/usuarios/registrar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(usuario)
+                    });
+
+                    const data = await response.json();
+
+                    if (data.mensaje === 'Usuario registrado exitosamente') {
+                        showAlert('alertaCliente', 'success', '<i class="bi bi-check-circle"></i> ' + data.mensaje + '. Redirigiendo al login...');
+                        setTimeout(() => {
+                            showClienteTab('login');
+                        }, 2000);
+                    } else {
+                        showAlert('alertaCliente', 'danger', '<i class="bi bi-x-circle"></i> ' + data.mensaje);
+                    }
+                } catch (error) {
+                    showAlert('alertaCliente', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error de conexión con el servidor');
+                    console.error('Error:', error);
+                }
+            });
+
+            // ==================== LOGIN PERSONAL ====================
+            document.getElementById('formLoginPersonal').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const usuario = document.getElementById('personalUsuario').value;
+                const contrasena = document.getElementById('personalPassword').value;
+
+                try {
+                    const response = await fetch(`${API_URL}/empleados/login`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ usuario, contrasena })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.exito) {
+                        showAlert('alertaPersonal', 'success', '<i class="bi bi-check-circle"></i> ¡Bienvenido ' + data.empleado.nombre + '!');
+                        sessionStorage.setItem('empleado', JSON.stringify(data.empleado));
+                        sessionStorage.setItem('tipoUsuario', 'empleado');  // ← LÍNEA NUEVA
+                        setTimeout(() => {
+                            window.location.href = 'index.html';  // ← CAMBIO: antes era empleado-dashboard.html
+                        }, 1500);
+                    } else {
+                        showAlert('alertaPersonal', 'danger', '<i class="bi bi-x-circle"></i> ' + data.mensaje);
+                    }
+                } catch (error) {
+                    showAlert('alertaPersonal', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error de conexión con el servidor');
+                    console.error('Error:', error);
+                }
+            });
+
+            // ==================== RECUPERAR CONTRASEÑA CLIENTE - PASO 1 ====================
+            document.getElementById('formRecuperarEmail').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                correoRecuperacionCliente = document.getElementById('recuperarEmail').value;
+
+                try {
+                    const response = await fetch(`${API_URL}/usuarios/recuperar/enviar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ correo: correoRecuperacionCliente })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.mensaje === 'Código enviado al correo') {
+                        showAlert('alertaRecuperar', 'success', '<i class="bi bi-check-circle"></i> ' + data.mensaje);
+                        document.getElementById('recuperarPaso1').style.display = 'none';
+                        document.getElementById('recuperarPaso2').style.display = 'block';
+                        document.getElementById('code1').focus();
+                    } else {
+                        showAlert('alertaRecuperar', 'danger', '<i class="bi bi-x-circle"></i> ' + data.mensaje);
+                    }
+                } catch (error) {
+                    showAlert('alertaRecuperar', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error de conexión');
+                    console.error('Error:', error);
+                }
+            });
+
+            // ==================== RECUPERAR CONTRASEÑA CLIENTE - PASO 2 ====================
+            document.getElementById('formVerificarCodigo').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                codigoVerificadoCliente = '';
+                for(let i = 1; i <= 6; i++) {
+                    codigoVerificadoCliente += document.getElementById('code' + i).value;
+                }
+
+                if(codigoVerificadoCliente.length === 6) {
+                    showAlert('alertaRecuperar', 'success', '<i class="bi bi-check-circle"></i> Código verificado correctamente');
+                    document.getElementById('recuperarPaso2').style.display = 'none';
+                    document.getElementById('recuperarPaso3').style.display = 'block';
+                    document.getElementById('nuevaPassword').focus();
+                } else {
+                    showAlert('alertaRecuperar', 'danger', '<i class="bi bi-x-circle"></i> Por favor ingresa los 6 dígitos del código');
+                }
+            });
+
+            // ==================== RECUPERAR CONTRASEÑA CLIENTE - PASO 3 ====================
+            document.getElementById('formNuevaPassword').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const nuevaContraseña = document.getElementById('nuevaPassword').value;
+                const confirmarPassword = document.getElementById('confirmarNuevaPassword').value;
+
+                if(nuevaContraseña !== confirmarPassword) {
+                    showAlert('alertaRecuperar', 'danger', '<i class="bi bi-x-circle"></i> Las contraseñas no coinciden');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_URL}/usuarios/recuperar/cambiar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            correo: correoRecuperacionCliente, 
+                            codigo: codigoVerificadoCliente, 
+                            nuevaContraseña 
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.mensaje === 'Contraseña cambiada exitosamente') {
+                        showAlert('alertaRecuperar', 'success', '<i class="bi bi-check-circle"></i> ' + data.mensaje + '. Redirigiendo al login...');
+                        setTimeout(() => {
+                            showSection('cliente');
+                            document.getElementById('recuperarPaso1').style.display = 'block';
+                            document.getElementById('recuperarPaso2').style.display = 'none';
+                            document.getElementById('recuperarPaso3').style.display = 'none';
+                        }, 2000);
+                    } else {
+                        showAlert('alertaRecuperar', 'danger', '<i class="bi bi-x-circle"></i> ' + data.mensaje);
+                    }
+                } catch (error) {
+                    showAlert('alertaRecuperar', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error de conexión');
+                    console.error('Error:', error);
+                }
+            });
+
+            // ==================== REENVIAR CÓDIGO CLIENTE ====================
+            async function reenviarCodigoCliente() {
+                try {
+                    const response = await fetch(`${API_URL}/usuarios/recuperar/enviar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ correo: correoRecuperacionCliente })
+                    });
+
+                    const data = await response.json();
+                    showAlert('alertaRecuperar', 'info', '<i class="bi bi-info-circle"></i> ' + data.mensaje);
+
+                    // Limpiar inputs de código
+                    for(let i = 1; i <= 6; i++) {
+                        document.getElementById('code' + i).value = '';
+                    }
+                    document.getElementById('code1').focus();
+                } catch (error) {
+                    showAlert('alertaRecuperar', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error al reenviar código');
+                    console.error('Error:', error);
+                }
+            }
+
+            // ==================== RECUPERAR CONTRASEÑA EMPLEADO - PASO 1 ====================
+            document.getElementById('formRecuperarEmailEmpleado').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                correoRecuperacionEmpleado = document.getElementById('recuperarEmailEmpleado').value;
+
+                try {
+                    const response = await fetch(`${API_URL}/empleados/recuperar/enviar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ correo: correoRecuperacionEmpleado })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.mensaje === 'Código enviado al correo') {
+                        showAlert('alertaRecuperarEmpleado', 'success', '<i class="bi bi-check-circle"></i> ' + data.mensaje);
+                        document.getElementById('recuperarEmpleadoPaso1').style.display = 'none';
+                        document.getElementById('recuperarEmpleadoPaso2').style.display = 'block';
+                        document.getElementById('codeEmp1').focus();
+                    } else {
+                        showAlert('alertaRecuperarEmpleado', 'danger', '<i class="bi bi-x-circle"></i> ' + data.mensaje);
+                    }
+                } catch (error) {
+                    showAlert('alertaRecuperarEmpleado', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error de conexión');
+                    console.error('Error:', error);
+                }
+            });
+
+            // ==================== RECUPERAR CONTRASEÑA EMPLEADO - PASO 2 ====================
+            document.getElementById('formVerificarCodigoEmpleado').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                codigoVerificadoEmpleado = '';
+                for(let i = 1; i <= 6; i++) {
+                    codigoVerificadoEmpleado += document.getElementById('codeEmp' + i).value;
+                }
+
+                if(codigoVerificadoEmpleado.length === 6) {
+                    showAlert('alertaRecuperarEmpleado', 'success', '<i class="bi bi-check-circle"></i> Código verificado correctamente');
+                    document.getElementById('recuperarEmpleadoPaso2').style.display = 'none';
+                    document.getElementById('recuperarEmpleadoPaso3').style.display = 'block';
+                    document.getElementById('nuevaPasswordEmpleado').focus();
+                } else {
+                    showAlert('alertaRecuperarEmpleado', 'danger', '<i class="bi bi-x-circle"></i> Por favor ingresa los 6 dígitos del código');
+                }
+            });
+
+            // ==================== RECUPERAR CONTRASEÑA EMPLEADO - PASO 3 ====================
+            document.getElementById('formNuevaPasswordEmpleado').addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const nuevaContrasena = document.getElementById('nuevaPasswordEmpleado').value;
+                const confirmarPassword = document.getElementById('confirmarNuevaPasswordEmpleado').value;
+
+                if(nuevaContrasena !== confirmarPassword) {
+                    showAlert('alertaRecuperarEmpleado', 'danger', '<i class="bi bi-x-circle"></i> Las contraseñas no coinciden');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_URL}/empleados/recuperar/cambiar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            correo: correoRecuperacionEmpleado, 
+                            codigo: codigoVerificadoEmpleado, 
+                            nuevaContrasena 
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.mensaje === 'Contraseña cambiada exitosamente') {
+                        showAlert('alertaRecuperarEmpleado', 'success', '<i class="bi bi-check-circle"></i> ' + data.mensaje + '. Redirigiendo al login...');
+                        setTimeout(() => {
+                            showSection('personal');
+                            document.getElementById('recuperarEmpleadoPaso1').style.display = 'block';
+                            document.getElementById('recuperarEmpleadoPaso2').style.display = 'none';
+                            document.getElementById('recuperarEmpleadoPaso3').style.display = 'none';
+                        }, 2000);
+                    } else {
+                        showAlert('alertaRecuperarEmpleado', 'danger', '<i class="bi bi-x-circle"></i> ' + data.mensaje);
+                    }
+                } catch (error) {
+                    showAlert('alertaRecuperarEmpleado', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error de conexión');
+                    console.error('Error:', error);
+                }
+            });
+
+            // ==================== REENVIAR CÓDIGO EMPLEADO ====================
+            async function reenviarCodigoEmpleado() {
+                try {
+                    const response = await fetch(`${API_URL}/empleados/recuperar/enviar`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ correo: correoRecuperacionEmpleado })
+                    });
+
+                    const data = await response.json();
+                    showAlert('alertaRecuperarEmpleado', 'info', '<i class="bi bi-info-circle"></i> ' + data.mensaje);
+
+                    // Limpiar inputs de código
+                    for(let i = 1; i <= 6; i++) {
+                        document.getElementById('codeEmp' + i).value = '';
+                    }
+                    document.getElementById('codeEmp1').focus();
+                } catch (error) {
+                    showAlert('alertaRecuperarEmpleado', 'danger', '<i class="bi bi-exclamation-triangle"></i> Error al reenviar código');
+                    console.error('Error:', error);
+                }
+            }
+
+            // ==================== VALIDACIONES ADICIONALES ====================
+            // Validar solo números en cédula
+            document.getElementById('regCedula').addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+            // Validar solo números en teléfono
+            document.getElementById('regTelefono').addEventListener('input', function(e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+            });
+
+                // Validar inputs de código (solo números)
+            document.querySelectorAll('.code-input').forEach(input => {
+                input.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^0-9]/g, '');
+                });
+            });
+
+            // ==================== RECORDAR USUARIO ====================
+            // Cargar email guardado si existe
+            window.addEventListener('DOMContentLoaded', function() {
+                const recordarEmail = localStorage.getItem('recordarEmail');
+                if (recordarEmail) {
+                    document.getElementById('loginEmail').value = recordarEmail;
+                    document.getElementById('recordarme').checked = true;
+                }
+            });
+
+            // Guardar email si está marcado "Recordarme"
+            document.getElementById('formLoginCliente').addEventListener('submit', function() {
+                const recordarme = document.getElementById('recordarme').checked;
+                const email = document.getElementById('loginEmail').value;
+
+                if (recordarme) {
+                    localStorage.setItem('recordarEmail', email);
+                } else {
+                    localStorage.removeItem('recordarEmail');
+                }
+            });
+
+            // ==================== PREVENIR NAVEGACIÓN EN RECUPERACIÓN ====================
+            // Resetear pasos al cambiar de sección
+            function resetearRecuperacionCliente() {
+                document.getElementById('recuperarPaso1').style.display = 'block';
+                document.getElementById('recuperarPaso2').style.display = 'none';
+                document.getElementById('recuperarPaso3').style.display = 'none';
+                correoRecuperacionCliente = '';
+                codigoVerificadoCliente = '';
+            }
+
+            function resetearRecuperacionEmpleado() {
+                document.getElementById('recuperarEmpleadoPaso1').style.display = 'block';
+                document.getElementById('recuperarEmpleadoPaso2').style.display = 'none';
+                document.getElementById('recuperarEmpleadoPaso3').style.display = 'none';
+                correoRecuperacionEmpleado = '';
+                codigoVerificadoEmpleado = '';
+            }
+
+            // ==================== VALIDACIÓN EDAD MÍNIMA ====================
+            document.getElementById('regFechaNacimiento').addEventListener('change', function() {
+                const fechaNac = new Date(this.value);
+                const hoy = new Date();
+                let edad = hoy.getFullYear() - fechaNac.getFullYear();
+                const mes = hoy.getMonth() - fechaNac.getMonth();
+
+                if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+                    edad--;
+                }
+
+                if (edad < 18) {
+                    showAlert('alertaCliente', 'warning', '<i class="bi bi-exclamation-triangle"></i> Debes ser mayor de 18 años para registrarte');
+                    this.value = '';
+                }
+            });
+
+        </script>
+    </body>
+</html>
